@@ -39,13 +39,16 @@ public class Car {
         this.expDate = expDate;
     }
 
+    /*
     public List<Reservation> getReservation() {
         return reservation;
     }
 
-    public void setReservation(List<Reservation> reservation) {
+     public void setReservation(List<Reservation> reservation) {
         this.reservation = reservation;
     }
+    */
+
 
     public String getPlateNumber() {
         return plateNumber;

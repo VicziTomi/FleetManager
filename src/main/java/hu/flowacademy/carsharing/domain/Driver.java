@@ -39,6 +39,7 @@ public class Driver {
         this.active = active;
     }
 
+    /*
     public List<Reservation> getReservations() {
         return reservations;
     }
@@ -46,6 +47,8 @@ public class Driver {
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
+
+     */
 
     public String getLoginName() {
         return loginName;
