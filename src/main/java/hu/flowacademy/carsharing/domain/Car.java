@@ -2,6 +2,7 @@ package hu.flowacademy.carsharing.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,7 @@ public class Car {
     @OneToMany(mappedBy = "car")
     private List<Reservation> reservation;
 
+    private final LocalDate now = LocalDate.now();
 
     public Car() {
     }

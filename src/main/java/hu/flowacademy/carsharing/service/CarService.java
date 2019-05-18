@@ -33,11 +33,23 @@ public class CarService {
         return carRepository.findAll();
     }
 
+    public List<Car> listCarsByBrand(String brand) {
+        return carRepository.findAllByBrand(brand);
+    }
+
+    public List<Car> listCarsByType(String type) {
+        return carRepository.findAllByType(type);
+    }
+
     public Car getOneCar(String id) {
         if (carRepository.findById(id).isPresent()) {
             return carRepository.findById(id).get();
         }
         throw new CarNotExistsException(id);
+    }
+
+    public List<Car> validCars() {
+        return carRepository.validCars();
     }
 
 

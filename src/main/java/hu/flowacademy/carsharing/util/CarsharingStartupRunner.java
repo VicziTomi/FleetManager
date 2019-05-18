@@ -44,9 +44,15 @@ public class CarsharingStartupRunner implements CommandLineRunner {
         Car c1 = new Car("NHJ637", "Seat", "Toledo", 2015, LocalDate.of(2021, Month.APRIL, 30));
         Car c2 = new Car("KMM914", "Peugeout", "307", 2006, LocalDate.of(2019, Month.MAY, 20));
         Car c3 = new Car("AAA111", "Aston Martin", "DB-5", 1967, LocalDate.of(2023, Month.JANUARY, 1));
+        Car c4 = new Car("ABC123", "Lada", "Samara", 1972, LocalDate.of(1996, Month.MARCH, 12));
+        Car c5 = new Car("xxx", "VW", "sedan", 2008, LocalDate.of(2020, Month.APRIL, 1));
+        Car c6 = new Car("yyy", "Audi", "sedan", 2014, LocalDate.of(2023, Month.APRIL, 1));
         carRepository.save(c1);
         carRepository.save(c2);
         carRepository.save(c3);
+        carRepository.save(c4);
+        carRepository.save(c5);
+        carRepository.save(c6);
 
 
 

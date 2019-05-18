@@ -1,6 +1,7 @@
 package hu.flowacademy.carsharing.controller;
 
 import hu.flowacademy.carsharing.domain.Car;
+import hu.flowacademy.carsharing.domain.Reservation;
 import hu.flowacademy.carsharing.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,21 @@ public class CarController {
     @GetMapping("/allcars")
     public  ResponseEntity<List<Car>> allCars () {
         return ResponseEntity.ok(carService.listCars());
+    }
+
+    @GetMapping("/validcars")
+    public ResponseEntity<List<Car>> validCars() {
+        return ResponseEntity.ok(carService.validCars());
+    }
+
+    @GetMapping("/cars-by-brand/{brand}")
+    public ResponseEntity<List<Car>> carsByBrand(@PathVariable String brand) {
+        return ResponseEntity.ok(carService.listCarsByBrand(brand));
+    }
+
+    @GetMapping("/cars-by-type/{type}")
+    public ResponseEntity<List<Car>> carsByType(@PathVariable String type) {
+        return ResponseEntity.ok(carService.listCarsByType(type));
     }
 
     @GetMapping("/onecar/{id}")
