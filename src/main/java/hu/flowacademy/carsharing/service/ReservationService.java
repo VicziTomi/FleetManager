@@ -3,6 +3,8 @@ package hu.flowacademy.carsharing.service;
 import hu.flowacademy.carsharing.CarsharingApplication;
 import hu.flowacademy.carsharing.domain.Car;
 import hu.flowacademy.carsharing.domain.Reservation;
+import hu.flowacademy.carsharing.exception.CarExpirationException;
+import hu.flowacademy.carsharing.exception.DriverLicenceExpirationException;
 import hu.flowacademy.carsharing.exception.ReservationConflictException;
 import hu.flowacademy.carsharing.exception.ReservationNotFoundException;
 import hu.flowacademy.carsharing.repository.ReservationRepository;
@@ -25,12 +27,18 @@ public class ReservationService {
     @Autowired
     private CarService carService;
 
+    @Autowired
+    private DriverService driverService;
+
     public Reservation save(Reservation reservation) {
         return reservationRepository.save(reservation);
     }
 
     public Reservation validatedSave(Reservation reservation, String id) {
         List<Reservation> resCars = listReservationsById(id);
+        reservation.setCar(carService.getOneCar(id));
+        // checkDriverLicence(reservation, id);
+        checkCarExpDate(reservation, id);
         if (resCars == null) {
             return reservationRepository.save(reservation);
         } else {
@@ -48,6 +56,20 @@ public class ReservationService {
             }
             throw new ReservationConflictException();
         }
+    }
+
+    public boolean checkCarExpDate(Reservation reservation, String id) {
+        if (reservation.getReservationStart().isBefore(carService.getOneCar(id).getExpDate())) {
+            throw new CarExpirationException();
+        }
+        return true;
+    }
+
+    public boolean checkDriverLicence(Reservation reservation, String id) {
+        if (reservation.getReservationStart().isBefore(driverService.getOneDriver(id).getLicenceExpDate())) {
+            throw new DriverLicenceExpirationException();
+        }
+        return true;
     }
 
     public void delete(String id) {
