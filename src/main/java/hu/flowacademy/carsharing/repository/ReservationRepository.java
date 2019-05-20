@@ -23,4 +23,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
     @Query(value = "SELECT * FROM Reservation res WHERE res.reservation_start > ?1 AND res.reservation_end < ?2", nativeQuery = true)
     List<Reservation> findByResPeriod(@Param("reservation_start") HashMap<String, LocalDate> reservation_start, @Param("reservation_end") HashMap<String, LocalDate> reservation_end);
 
+    void deleteByDriver_LoginName(String id);
 }

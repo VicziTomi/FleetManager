@@ -106,4 +106,8 @@ public class ReservationService {
     public List<Reservation> listReservationsById(String plateNumber) {
         return reservationRepository.findAllByCar_PlateNumber(plateNumber);
     }
+
+    public void deleteByDriver(String id) {
+        reservationRepository.deleteByDriver_LoginName(id);
+    }
 }

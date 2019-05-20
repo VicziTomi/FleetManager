@@ -6,6 +6,7 @@ import hu.flowacademy.carsharing.exception.CarDeleteViolationException;
 import hu.flowacademy.carsharing.exception.CarHasValidReservationsException;
 import hu.flowacademy.carsharing.exception.CarNotExistsException;
 import hu.flowacademy.carsharing.repository.CarRepository;
+import hu.flowacademy.carsharing.repository.ReservationRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class CarService {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private ReservationRepository reservationRepository;
+
     public Car save(Car car) { return carRepository.save(car); }
 
     public void delete(String id) {
@@ -36,12 +40,13 @@ public class CarService {
 
     public boolean validDelete(String plateNumber) {
         List<Reservation> reservationList = reservationService.listReservationsById(plateNumber);
+        if (reservationList.isEmpty()) {
+            carRepository.deleteById(plateNumber);
+            return true;
+        }
         System.out.println(reservationList);
         for (Reservation r: reservationList) {
-            if (reservationList.isEmpty()) {
-                carRepository.deleteById(plateNumber);
-                return true;
-            } else if (r.getReservationEnd().isBefore(carRepository.getOne(plateNumber).getNow())) {
+            if (r.getReservationEnd().isBefore(carRepository.getOne(plateNumber).getNow())) {
                 carRepository.deleteById(plateNumber);
                 return true;
             }

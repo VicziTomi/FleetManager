@@ -35,4 +35,9 @@ public class DriverController {
         driverService.delete(id);
     }
 
+    @DeleteMapping("validdelete/{id}")
+    public void validDelete(@PathVariable String id) {
+        driverService.validDelete(id);
+    }
+
 }
