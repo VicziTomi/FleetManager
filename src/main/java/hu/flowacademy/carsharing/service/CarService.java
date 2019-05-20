@@ -1,7 +1,9 @@
 package hu.flowacademy.carsharing.service;
 
 import hu.flowacademy.carsharing.domain.Car;
+import hu.flowacademy.carsharing.domain.Reservation;
 import hu.flowacademy.carsharing.exception.CarDeleteViolationException;
+import hu.flowacademy.carsharing.exception.CarHasValidReservationsException;
 import hu.flowacademy.carsharing.exception.CarNotExistsException;
 import hu.flowacademy.carsharing.repository.CarRepository;
 import org.hibernate.exception.ConstraintViolationException;
@@ -19,6 +21,9 @@ public class CarService {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private ReservationService reservationService;
+
     public Car save(Car car) { return carRepository.save(car); }
 
     public void delete(String id) {
@@ -27,6 +32,21 @@ public class CarService {
         } catch (CarNotExistsException | CarDeleteViolationException e) {
             e.getMessage();
         }
+    }
+
+    public boolean validDelete(String plateNumber) {
+        List<Reservation> reservationList = reservationService.listReservationsById(plateNumber);
+        System.out.println(reservationList);
+        for (Reservation r: reservationList) {
+            if (reservationList.isEmpty()) {
+                carRepository.deleteById(plateNumber);
+                return true;
+            } else if (r.getReservationEnd().isBefore(carRepository.getOne(plateNumber).getNow())) {
+                carRepository.deleteById(plateNumber);
+                return true;
+            }
+        }
+        throw new CarHasValidReservationsException();
     }
 
     public List<Car> listCars() {

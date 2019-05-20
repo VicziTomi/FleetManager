@@ -37,7 +37,7 @@ public class ReservationService {
     public Reservation validatedSave(Reservation reservation, String id) {
         List<Reservation> resCars = listReservationsById(id);
         reservation.setCar(carService.getOneCar(id));
-        // checkDriverLicence(reservation, id);
+        checkDriverLicence(reservation);
         checkCarExpDate(reservation, id);
         if (resCars == null) {
             return reservationRepository.save(reservation);
@@ -65,8 +65,8 @@ public class ReservationService {
         return true;
     }
 
-    public boolean checkDriverLicence(Reservation reservation, String id) {
-        if (reservation.getReservationStart().isBefore(driverService.getOneDriver(id).getLicenceExpDate())) {
+    public boolean checkDriverLicence(Reservation reservation) {
+        if (reservation.getReservationStart().isAfter(reservation.getDriver().getLicenceExpDate())) {
             throw new DriverLicenceExpirationException();
         }
         return true;

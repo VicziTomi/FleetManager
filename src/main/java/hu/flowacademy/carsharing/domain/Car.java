@@ -51,6 +51,9 @@ public class Car {
     }
     */
 
+    public LocalDate getNow() {
+        return now;
+    }
 
     public String getPlateNumber() {
         return plateNumber;
